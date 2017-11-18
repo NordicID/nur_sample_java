@@ -25,6 +25,9 @@ Use script to compile all transports and samples:
   - Run in shell: sh build_all.sh
   - Assumes RXTXcomm.jar found in /usr/share/java/RXTXcomm.jar
   - Debian based distros you can install RXTX: sudo apt-get install librxtx-java
+- eclipse IDE can be used also compiling
+  - Import all projects to workspace
+  - Might need to fix buildpaths, depending on platform
   
 ### Running samples
 First see **Setup your transport** section
@@ -38,6 +41,9 @@ Use script to run samples:
   - Example: $> sh run_sample.sh samples\00_Connection
   - Assumes RXTXcomm.jar found in /usr/share/java/RXTXcomm.jar
   - Assumes librxtxSerial.so found in java library path
+- eclipse IDE can be used also running/debugging
+  - Import all projects to workspace
+  - Might need to fix buildpaths, depending on platform
 
 ### Updating NurApi.jar
 You can update latest NurApi.jar by running script.
