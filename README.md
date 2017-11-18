@@ -1,5 +1,6 @@
 # NUR java samples
-This repository contains NurApi java samples
+This repository contains NurApi java samples. 
+- [Java docs](https://github.com/NordicID/nur_sdk/tree/master/java)
 
 ### Directories
 - transports
