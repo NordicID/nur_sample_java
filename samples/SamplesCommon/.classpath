@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="import/NurApi.jar" sourcepath="/NurApi"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="rxtx/win_x64/RXTXcomm.jar"/>
+	<classpathentry kind="lib" path="jars/NurApiSerialTransport.jar"/>
+	<classpathentry kind="lib" path="jars/NurApiSocketTransport.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
