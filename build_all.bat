@@ -6,6 +6,15 @@ REM usage:
 REM Execute bat in command prompt
 REM nur_sample_java>build_all.bat
 
+REM manually set JAVA_HOME
+REM SET JAVA_HOME="C:\Program Files\Java\jre1.8.0_31"
+if "%JAVA_HOME%" == "" (
+	echo FAILED
+	echo JAVA_HOME Environment not set
+	echo Set JAVA_HOME to point java install dir in system environment
+	echo Or set JAVA_HOME in this bat file
+	exit /B 2
+)
 
 REM RXTX jar path
 SET RXTXJAR=transports/NurApiSerialTransport/rxtx/win_x64/RXTXcomm.jar

@@ -19,6 +19,7 @@ This repository contains NurApi java samples.
 ### Compiling samples
 Use script to compile all transports and samples:
 - Windows
+  - JAVA_HOME environment variable needs to point java JDK install dir
   - Run in command prompt: build_all.bat
   - Depending on your platform (x86,x64) you may need to change RXTXJAR in script
 - Linux
@@ -33,6 +34,7 @@ Use script to compile all transports and samples:
 First see **Setup your transport** section
 Use script to run samples:
 - Windows
+  - JAVA_HOME environment variable needs to point java JDK install dir
   - Run in command prompt: run_sample.bat <folder>
   - Example: nur_sample_java>run_sample.bat samples\00_Connection
   - Depending on your platform (x86,x64) you may need to change RXTXJAR in script
