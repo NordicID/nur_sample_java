@@ -35,7 +35,7 @@ This repository contains NurApi java samples.
   - Debian based distros you can install RXTX: **sudo apt-get install librxtx-java**
   - Build all samples: **sh build_all.sh**
   - Run sample: **sh run_sample.sh \<folder>**
-    - Example: $> sh run_sample.sh samples\00_Connection
+    - Example: $> sh run_sample.sh samples/00_Connection
   
 #### Eclipse IDE
   - Import all projects under samples folder to workspace
