@@ -22,6 +22,12 @@ import com.nordicid.nurapi.NurIRConfig;
 import com.nordicid.nurapi.NurRespInventory;
 import com.nordicid.nurapi.NurTag;
 
+/**
+ * This example shows how to run single synchronous inventory command with extra read command.
+ * - Inventory is used to read multiple tag's EPC codes in reader field of view
+ * - With inventory read you can read any other memory bank during inventory
+ * - NOTE: This will slow down inventory speed by approx. half
+ */
 public class Example {
 	
 	public static void main(String[] args) {
@@ -67,11 +73,14 @@ public class Example {
 			NurRespInventory resp = api.inventory();
 			System.out.println("inventory numTagsFound: " + resp.numTagsFound);
 			
-			// Fetch and print tags
-			api.fetchTags();
-			for (int n=0; n<api.getStorage().size(); n++) {
-				NurTag tag = api.getStorage().get(n);
-				System.out.println(String.format("tag[%d] EPC '%s' DATA '%s'", n, tag.getEpcString(), tag.getDataString()));
+			if (resp.numTagsFound > 0)
+			{
+				// Fetch and print tags
+				api.fetchTags();
+				for (int n=0; n<api.getStorage().size(); n++) {
+					NurTag tag = api.getStorage().get(n);
+					System.out.println(String.format("tag[%d] EPC '%s' DATA '%s'", n, tag.getEpcString(), tag.getDataString()));
+				}
 			}
 			
 			// Stop inventory read

@@ -22,6 +22,9 @@ import com.nordicid.nurapi.NurRespDiagConfig;
 import com.nordicid.nurapi.NurRespDiagGetReport;
 import com.nordicid.nurapi.NurRespReaderInfo;
 
+/**
+ * This example shows how to get diagnostics report from NUR module.
+ */
 public class Example {
 	
 	static void printDiagReport(NurRespDiagGetReport report)

@@ -21,6 +21,11 @@ import com.nordicid.nurapi.NurEventTriggeredRead;
 import com.nordicid.nurapi.NurRespInventory;
 import com.nordicid.nurapi.NurTag;
 
+/**
+ * This example shows how to run single synchronous inventory command with EPC select mask.
+ * - Inventory is used to read multiple tag's EPC codes in reader field of view
+ * - With inventorySelect you can filter out only tags you don't want to see. set your wanted EPC filter in 'partialEpcString' variable.
+ */
 public class Example {
 	
 	public static void main(String[] args) {

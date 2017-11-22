@@ -20,6 +20,9 @@ import com.nordicid.nurapi.NurEventTraceTag;
 import com.nordicid.nurapi.NurEventTriggeredRead;
 import com.nordicid.nurapi.NurRespReaderInfo;
 
+/**
+ * This example just shows howto create connection to reader. 
+ */
 public class Example {
 	
 	public static void main(String[] args) {

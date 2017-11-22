@@ -21,6 +21,10 @@ import com.nordicid.nurapi.NurEventTriggeredRead;
 import com.nordicid.nurapi.NurTag;
 import com.nordicid.nurapi.NurTagStorage;
 
+/**
+ * This example shows how to run continuous inventory in asynchronous stream.
+ * - Inventory is used to read multiple tag's EPC codes in reader field of view
+ */
 public class Example {
 	
 	// We store unique read tags in this storage

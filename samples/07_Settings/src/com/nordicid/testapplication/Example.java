@@ -5,9 +5,6 @@ import com.nordicid.samples.common.SamplesCommon;
 import com.nordicid.nurapi.AntennaMapping;
 import com.nordicid.nurapi.NurApi;
 import com.nordicid.nurapi.NurApiListener;
-import com.nordicid.nurapi.NurCmdDiagConfig;
-import com.nordicid.nurapi.NurCmdDiagGetReport;
-import com.nordicid.nurapi.NurDiagReportListener;
 import com.nordicid.nurapi.NurEventAutotune;
 import com.nordicid.nurapi.NurEventClientInfo;
 import com.nordicid.nurapi.NurEventDeviceInfo;
@@ -22,10 +19,11 @@ import com.nordicid.nurapi.NurEventTagTrackingData;
 import com.nordicid.nurapi.NurEventTraceTag;
 import com.nordicid.nurapi.NurEventTriggeredRead;
 import com.nordicid.nurapi.NurRespDevCaps;
-import com.nordicid.nurapi.NurRespDiagConfig;
-import com.nordicid.nurapi.NurRespDiagGetReport;
 import com.nordicid.nurapi.NurSetup;
 
+/**
+ * This example shows how to read/write NUR module RFID settings.
+ */
 public class Example {
 	
 	static void printSetup(NurSetup setup)

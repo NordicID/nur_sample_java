@@ -21,6 +21,10 @@ import com.nordicid.nurapi.NurEventTriggeredRead;
 import com.nordicid.nurapi.NurRespInventory;
 import com.nordicid.nurapi.NurTag;
 
+/**
+ * This example shows how to run single synchronous inventory command.
+ * - Inventory is used to read multiple tag's EPC codes in reader field of view
+ */
 public class Example {
 	
 	public static void main(String[] args) {
@@ -42,6 +46,7 @@ public class Example {
 			api.clearIdBuffer(true);
 			
 			// Perform inventory w/ default settings
+			// NOTE: Depending on settings this might take up to few seconds to finish
 			NurRespInventory resp = api.inventory();
 			System.out.println("inventory numTagsFound: " + resp.numTagsFound);
 			

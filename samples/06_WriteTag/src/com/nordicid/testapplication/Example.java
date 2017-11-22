@@ -19,6 +19,10 @@ import com.nordicid.nurapi.NurEventTagTrackingData;
 import com.nordicid.nurapi.NurEventTraceTag;
 import com.nordicid.nurapi.NurEventTriggeredRead;
 
+/**
+ * This example shows how to write single tag memory bank content. 
+ * Set 'targetTagEpc' variable to match your tag EPC
+ */
 public class Example {
 	
 	public static void main(String[] args) {
@@ -36,6 +40,7 @@ public class Example {
 		}
 		
 		try {
+			// NOTE:
 			// Set this to match your test tag EPC
 			String targetTagEpc = "300833B2DDD9014000000005";
 			
@@ -44,12 +49,13 @@ public class Example {
 			
 			// Rewrite tag's EPC
 			System.out.println("Write tag " + targetTagEpc);
-			api.writeTagByEpc(targetEpcData, NurApi.BANK_EPC, 2, targetEpcData.length, targetEpcData);		
+			api.writeTagByEpc(targetEpcData, NurApi.BANK_EPC, 2, targetEpcData.length, targetEpcData);
 			
 			System.out.println("OK");
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
+			System.out.println("NOTE: Make sure 'targetTagEpc' match your specific tag EPC");
 		}
 
 		System.out.println("See you again!.");
