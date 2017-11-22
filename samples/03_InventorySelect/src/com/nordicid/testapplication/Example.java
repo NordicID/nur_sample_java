@@ -41,19 +41,26 @@ public class Example {
 			// Clear tag storage
 			api.clearIdBuffer(true);
 			
-			// EPC mask to singulate. Inventory all tags EPC starting with "2000"
-			byte []partialEpcData = NurApi.hexStringToByteArray("2000");
+			// Hex string for tag EPC matching
+			String partialEpcString = "2000";
+			
+			// EPC mask to singulate. Inventory all tags EPC starting with 'partialEpcString'
+			byte []partialEpcData = NurApi.hexStringToByteArray(partialEpcString);
 			
 			// Perform inventory select w/ rounds=0, Q=0, session=0, invert=false
+			System.out.println("Inventory tags EPC starting with '" + partialEpcString + "'");
 			NurRespInventory resp = api.inventorySelectByEpc(0, 0, 0, false, partialEpcData, partialEpcData.length);
 			System.out.println("inventory numTagsFound: " + resp.numTagsFound);
 			
-			// Fetch and print tags
-			api.fetchTags();
-			for (int n=0; n<api.getStorage().size(); n++) {
-				NurTag tag = api.getStorage().get(n);
-				System.out.println(String.format("tag[%d] EPC '%s' RSSI %d", n, tag.getEpcString(), tag.getRssi()));
-			}			
+			if (resp.numTagsFound > 0)
+			{
+				// Fetch and print tags
+				api.fetchTags();
+				for (int n=0; n<api.getStorage().size(); n++) {
+					NurTag tag = api.getStorage().get(n);
+					System.out.println(String.format("tag[%d] EPC '%s' RSSI %d", n, tag.getEpcString(), tag.getRssi()));
+				}
+			}
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

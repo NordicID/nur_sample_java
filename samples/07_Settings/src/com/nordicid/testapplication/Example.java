@@ -5,7 +5,9 @@ import com.nordicid.samples.common.SamplesCommon;
 import com.nordicid.nurapi.AntennaMapping;
 import com.nordicid.nurapi.NurApi;
 import com.nordicid.nurapi.NurApiListener;
-
+import com.nordicid.nurapi.NurCmdDiagConfig;
+import com.nordicid.nurapi.NurCmdDiagGetReport;
+import com.nordicid.nurapi.NurDiagReportListener;
 import com.nordicid.nurapi.NurEventAutotune;
 import com.nordicid.nurapi.NurEventClientInfo;
 import com.nordicid.nurapi.NurEventDeviceInfo;
@@ -19,9 +21,25 @@ import com.nordicid.nurapi.NurEventTagTrackingChange;
 import com.nordicid.nurapi.NurEventTagTrackingData;
 import com.nordicid.nurapi.NurEventTraceTag;
 import com.nordicid.nurapi.NurEventTriggeredRead;
+import com.nordicid.nurapi.NurRespDevCaps;
+import com.nordicid.nurapi.NurRespDiagConfig;
+import com.nordicid.nurapi.NurRespDiagGetReport;
 import com.nordicid.nurapi.NurSetup;
 
 public class Example {
+	
+	static void printSetup(NurSetup setup)
+	{
+		System.out.println("setup.linkFreq = " + setup.linkFreq);
+		System.out.println("setup.txLevel = " + setup.txLevel);
+		System.out.println("setup.inventoryQ = " + setup.inventoryQ);
+		System.out.println("setup.inventorySession = " + setup.inventorySession);
+		System.out.println("setup.inventoryRounds = " + setup.inventoryRounds);
+		System.out.println("setup.antennaMaskEx = " + setup.antennaMaskEx);
+		System.out.println("setup.selectedAntenna = " + setup.selectedAntenna);
+		System.out.println("setup.rfProfile = " + setup.rfProfile);
+		System.out.println("");
+	}
 	
 	public static void main(String[] args) {
 		NurApi api = null;
@@ -38,41 +56,58 @@ public class Example {
 		}
 		
 		try {
-			NurSetup setup = api.getModuleSetup();
-
+			NurRespDevCaps caps = api.getDeviceCaps();
+			
 			// Print antenna mapping
+			System.out.println("Antennas:");
 			AntennaMapping[] antennaMap = api.getAntennaMapping();
 			for (int n=0; n<antennaMap.length; n++) {
 				System.out.println(String.format("Antenna ID[%d] = '%s'", antennaMap[n].antennaId, antennaMap[n].name));
 			}
+			System.out.println("");
 						
-			// Print out some settings
-			System.out.println("setup.linkFreq = " + setup.linkFreq);
-			System.out.println("setup.txLevel = " + setup.txLevel);
-			System.out.println("setup.inventoryQ = " + setup.inventoryQ);
-			System.out.println("setup.inventorySession = " + setup.inventorySession);
-			System.out.println("setup.inventoryRounds = " + setup.inventoryRounds);
-			System.out.println("setup.antennaMaskEx = " + setup.antennaMaskEx);
-			System.out.println("setup.selectedAntenna = " + setup.selectedAntenna);
+			// Print out current setup
+			System.out.println("Current setup:");
+			printSetup(api.getModuleSetup());
 			
 			int writeFlags = 0;
+			NurSetup newSetup = new NurSetup();
 			
 			// Set full tx level
-			setup.txLevel = 0;
+			newSetup.txLevel = 0;
 			writeFlags |= NurApi.SETUP_TXLEVEL;
+			System.out.println("Set tx level to " + newSetup.txLevel);
 			
-			// Set 256kHz link freq
-			// NOTE: In NUR2 module this sets rfProfile=1
-			setup.linkFreq = 256000;
-			writeFlags |= NurApi.SETUP_LINKFREQ;
-			
-			// Enable antenna 1 and 2
-			setup.antennaMaskEx = NurApi.ANTENNAMASK_1 | NurApi.ANTENNAMASK_2;
+			if (caps.hasRfProfile())
+			{
+				// Set nominal rfprofile (NUR2 devices)
+				newSetup.rfProfile = NurApi.RFPROFILE_NOMINAL;
+				writeFlags |= NurApi.SETUP_RFPROFILE;
+				System.out.println("Set rf profile to " + newSetup.rfProfile);
+			} else {
+				// Set 256kHz link freq
+				newSetup.linkFreq = 256000;
+				writeFlags |= NurApi.SETUP_LINKFREQ;
+				System.out.println("Set link frequency to " + newSetup.linkFreq);
+			}
+						
+			if (caps.curCfgMaxAnt > 1) {
+				// Enable antenna 1 and 2
+				newSetup.antennaMaskEx = NurApi.ANTENNAMASK_1 | NurApi.ANTENNAMASK_2;
+				System.out.println("Enable antennas 1 ans 2");
+			} else {
+				// Enable antenna 1
+				newSetup.antennaMaskEx = NurApi.ANTENNAMASK_1;
+				System.out.println("Enable antenna 1");
+			}
 			writeFlags |= NurApi.SETUP_ANTMASKEX;
 
 			// Write module settings
-			api.setModuleSetup(setup, writeFlags);
+			api.setModuleSetup(newSetup, writeFlags);
 			System.out.println("OK");
+			
+			System.out.println("New setup:");
+			printSetup(api.getModuleSetup());
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

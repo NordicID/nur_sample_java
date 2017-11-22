@@ -45,12 +45,15 @@ public class Example {
 			NurRespInventory resp = api.inventory();
 			System.out.println("inventory numTagsFound: " + resp.numTagsFound);
 			
-			// Fetch and print tags
-			api.fetchTags();
-			for (int n=0; n<api.getStorage().size(); n++) {
-				NurTag tag = api.getStorage().get(n);
-				System.out.println(String.format("tag[%d] EPC '%s' RSSI %d", n, tag.getEpcString(), tag.getRssi()));
-			}			
+			if (resp.numTagsFound > 0)
+			{
+				// Fetch and print tags
+				api.fetchTags();
+				for (int n=0; n<api.getStorage().size(); n++) {
+					NurTag tag = api.getStorage().get(n);
+					System.out.println(String.format("tag[%d] EPC '%s' RSSI %d", n, tag.getEpcString(), tag.getRssi()));
+				}
+			}
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();

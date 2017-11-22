@@ -49,6 +49,8 @@ public class Example {
 			// Clear tag storage
 			api.clearIdBuffer(true);
 			
+			System.out.println("Starting inventory stream for 30 secs");
+			
 			// Start inventory stream, see inventoryStreamEvent() below
 			api.startInventoryStream();
 			
