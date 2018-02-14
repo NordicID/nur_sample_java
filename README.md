@@ -51,3 +51,7 @@ Script will download latest NurApi.jar from nur_sdk github to import directory.
   - Run in command prompt: UpdateImportsFromGitHub.bat
 - Linux
   - Run in shell: sh UpdateImportsFromGitHub.sh
+  
+### License
+All source files in this repository is provided under terms specified in [LICENSE](LICENSE) file.
+
