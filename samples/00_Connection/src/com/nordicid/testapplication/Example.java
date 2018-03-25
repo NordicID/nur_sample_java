@@ -39,6 +39,8 @@ public class Example {
 			return;
 		}
 		
+		System.out.println("NurApi v" + api.getFileVersion());
+		
 		try {			
 			// Test basic command (ping), to ensure that we are connected to the NurApi module
 			String resp = api.ping();
