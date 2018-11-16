@@ -31,9 +31,9 @@ This repository contains NurApi java samples.
   - Assumes **java** and **javac** are found in path
   - Assumes **RXTXcomm.jar** found in /usr/share/java/RXTXcomm.jar
   - Assumes **librxtxSerial.so** found in java library path (usually /usr/lib/jni)
-    - Depending on distro, you might need to adjust run_sample.sh script with: **-Djava.library.path="/usr/lib/jni/"**
-  - Debian based distros you can install RXTX: **sudo apt-get install librxtx-java**
+    - Debian based distros you can install RXTX: **sudo apt-get install librxtx-java**
   - Build all samples: **sh build_all.sh**
+  - Depending on distro, you might need to adjust run_sample.sh script with: **-Djava.library.path="/usr/lib/jni/"**
   - Run sample: **sh run_sample.sh \<folder>**
     - Example: $> sh run_sample.sh samples/00_Connection
   
