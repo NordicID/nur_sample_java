@@ -51,18 +51,25 @@ public class SamplesCommon {
 		System.out.println("createSocket("+addr+", "+port+")");
 		return new NurApiSocketTransport(addr, port);
 	}
+    
+    public static NurApi createNurApi()
+	{
+		// Create a new NurApi object
+		NurApi api = new NurApi();
+		// Enable log to stdout
+		api.setLogToStdout(true);
+			
+		// Enable full logging
+		// api.setLogLevel(NurApi.LOG_ERROR | NurApi.LOG_VERBOSE | NurApi.LOG_USER | NurApi.LOG_DATA);
+			
+		return api;
+	}
 	
 	public static NurApi createAndConnectNurApi() throws Exception
 	{
 		// Create a new NurApi object
-		NurApi api = new NurApi();
-		try {
-			// Enable log to stdout
-			api.setLogToStdout(true);
-			
-			// Enable full logging
-			//api.setLogLevel(NurApi.LOG_ERROR | NurApi.LOG_VERBOSE | NurApi.LOG_USER | NurApi.LOG_DATA);
-			
+		NurApi api = createNurApi();
+		try {			
 			// Set transport for NurApi
 			api.setTransport(SamplesCommon.createTransport());
 			
