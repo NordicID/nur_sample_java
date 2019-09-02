@@ -19,6 +19,7 @@ package com.nordicid.nurapi;
 
 import com.nordicid.nurapi.NurApiException;
 import com.nordicid.nurapi.NurApiTransport;
+import com.nordicid.nurapi.NurEventClientInfo;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +36,7 @@ import java.net.InetSocketAddress;
 /** 
  * Socket transport for NUR Java API.
  * @author Nordic ID.
- * @version 1.6.1.7
+ * @version 1.9.0.0
  */
 public class NurApiSocketTransport implements NurApiTransport
 {
@@ -46,6 +47,8 @@ public class NurApiSocketTransport implements NurApiTransport
 	private String mHost = "";
 	private int mPort = 0;
 	private boolean mConnected = false;
+	private NurEventClientInfo ci = null;
+	private NurApi nurParent=null;
 	
 	/**
 	 * Server uses this internally.
@@ -53,7 +56,7 @@ public class NurApiSocketTransport implements NurApiTransport
 	 */
 	public NurApiSocketTransport(Socket client)
 	{
-		mSocket = client;
+		mSocket = client;		
 	}
 	
 	/**
@@ -68,6 +71,11 @@ public class NurApiSocketTransport implements NurApiTransport
 		mPort = port;
 	}
 	
+	public void setClientInfo(NurApi parent, NurEventClientInfo clientInfo) {
+		ci = clientInfo;
+		nurParent=parent;
+	}
+
 	@Override
 	public void connect() throws Exception
 	{
@@ -80,6 +88,7 @@ public class NurApiSocketTransport implements NurApiTransport
 				InetAddress addr = InetAddress.getByName(mHost);
 				SocketAddress sockaddr = new InetSocketAddress(addr, mPort);
 				mSocket = new Socket();
+				mSocket.setKeepAlive(true);
 				mSocket.connect(sockaddr, 10000);
 				mOutput = mSocket.getOutputStream();
 				mInput = mSocket.getInputStream();
@@ -137,7 +146,19 @@ public class NurApiSocketTransport implements NurApiTransport
         }
     	catch(Exception e) {}        
         
-        mConnected = false;
+		mConnected = false;
+
+		if(ci != null) {
+			if(nurParent.mListener != null)
+			{
+				nurParent.syncNotification(new Runnable() {
+					@Override
+					public void run() {
+						nurParent.mListener.clientDisconnectedEvent(ci);		
+					}
+				});
+			}
+		}
 	}
 
 	@Override

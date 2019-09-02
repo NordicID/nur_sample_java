@@ -16,6 +16,7 @@
 */
 
 package com.nordicid.nurapi;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -53,20 +54,7 @@ public class NurApiSocketServer implements Runnable
 			});
 		}
 	}
-	
-	private void sendClientDisconnectedEvent(final NurEventClientInfo ci)
-	{
-		if(mApi.mListener != null)
-		{
-			mApi.syncNotification(new Runnable() {
-				@Override
-				public void run() {
-					mApi.mListener.clientDisconnectedEvent(ci);		
-				}
-			});
-		}
-	}
-	
+			
 	/**
 	 * Return list of NUR clients that are connected to the server.
 	 * @return List of connected NUR clients.
@@ -123,13 +111,15 @@ public class NurApiSocketServer implements Runnable
 			{
 				try {
 					ci = mClientList.get(i);
-					ci.nurApi.dispose();
-					sendClientDisconnectedEvent(ci);
-					mClientList.remove(i);
+					ci.nurApi.disconnect();
+					ci.nurApi.dispose();					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
+
+			mClientList.clear();
 		}
 		mApi.VLog("NurApiServer is stopped.");
 	}
@@ -160,7 +150,7 @@ public class NurApiSocketServer implements Runnable
 			return mClientList.size();
 		}
 	}
-	
+				
 	@Override
 	public void run()
 	{
@@ -173,35 +163,57 @@ public class NurApiSocketServer implements Runnable
 			{
 				try {
 					if(mServerSocket == null || mServerSocket.isClosed())
-					{
+					{						
 						mApi.VLog(String.format("Server is listening port: %d.", mListeningPort));
-						mServerSocket = new ServerSocket(mListeningPort); // More space found, re-open the listening socket.
-						mServerSocket.setSoTimeout(2000);
+						mServerSocket = new ServerSocket(mListeningPort); // More space found, re-open the listening socket.							
+						mServerSocket.setSoTimeout(5000);
 					}
 					
 					Socket client;
-					try {
-						client = mServerSocket.accept();
+					try {						
+						client = mServerSocket.accept();						
 					}  catch (SocketException e) {
 						continue; // Socket closed
 					} catch (SocketTimeoutException e) {
 						continue; // Socket accepted timed out (2000ms)
 					}
-					NurApi nurApi = new NurApi(new NurApiSocketTransport(client));
+					NurApiSocketTransport tr = new NurApiSocketTransport(client);
+					NurApi nurApi = new NurApi(tr);
 					nurApi.connect();
 					int port = client.getLocalPort();
-
 					String IpAdress = client.getInetAddress().getHostAddress();
 					NurEventClientInfo ci = new NurEventClientInfo(nurApi, IpAdress, port);
+
+					//Check if there is already connected device with same ip, then remove it
+					synchronized (mClientList) {
+						NurEventClientInfo cix;
+						for(int i = 0; i < mClientList.size(); i++)
+						{
+							try {
+								cix = mClientList.get(i);								
+								if(cix.ipAdress.equals(IpAdress)) {
+									//Same address. Kill it
+									mApi.VLog(String.format("Client reconnect. Kill old %s.", cix.ipAdress));
+									cix.nurApi.disconnect();
+									cix.nurApi.dispose();									
+									mClientList.remove(i);
+									break;
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						}
+					}
 					
 					synchronized (mClientList) {
 						mClientList.add(ci);
 					}
-					
-					mApi.VLog(String.format("Client connected : %s to port : %d.", ci.ipAdress, ci.port));
+										
 					sendClientConnectedEvent(ci);
+					tr.setClientInfo(mApi,ci);
 				}
 				catch (Exception e2) {
+					mApi.VLog(String.format("Exception:%s", e2.getMessage()));
 					e2.printStackTrace();
 				}
 			}
