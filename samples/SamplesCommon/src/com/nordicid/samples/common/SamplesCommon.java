@@ -15,11 +15,11 @@ public class SamplesCommon {
 	public static NurApiTransport createTransport() {
 		
 		// Connect reader over network
-		return createSocket("172.16.32.36", 4333);
+		return createSocket("192.168.1.110", 4333);
 		//return createSocket("ar8xaabbcc.local", 4333);
 		
 		// Connect reader over serial port (WINDOWS)
-		//return createSerial("COM5", 115200);
+		//return createSerial("COM30", 115200);
 		
 		// Connect reader over serial port (Linux)
 		//return createSerial("/dev/ttyACM0", 115200);
