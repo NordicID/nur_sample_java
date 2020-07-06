@@ -5,6 +5,10 @@ import com.nordicid.nurapi.NurApiTransport;
 import com.nordicid.nurapi.NurApi;
 import com.nordicid.nurapi.NurApiSerialTransport;
 
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Enumeration;
+
 public class SamplesCommon {
 	
 
@@ -14,8 +18,39 @@ public class SamplesCommon {
 	 */	
 	public static NurApiTransport createTransport() {
 		
+		Map<String, String> portNames = null;
+		try {
+			portNames = NurApiSerialTransport.enumeratePortsFriendly();
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		String nurPort = "";
+
+		ArrayList<String> ports = NurApiSerialTransport.enumeratePorts();
+		System.out.println("Serial ports:"); 		
+		for (String port : ports) {
+			System.out.println("Port: '"+port+"'"); 	
+			if (portNames != null && portNames.containsKey(port)) {
+				System.out.println("FriendlyName: '"+portNames.get(port)+"'");
+				if (portNames.get(port).contains("NUR")) {
+					nurPort = port;
+					System.out.println("Found NUR port!");
+					break;
+				}
+			}
+			System.out.println(""); 	
+		}
+		
+		if (nurPort.isEmpty()) {
+			System.out.println("Unable to find NUR serial port"); 	
+			return null;
+		}
+		
+		return createSerial(nurPort, 115200);
+
 		// Connect reader over network
-		return createSocket("192.168.1.110", 4333);
+		//return createSocket("192.168.1.110", 4333);
 		//return createSocket("ar8xaabbcc.local", 4333);
 		
 		// Connect reader over serial port (WINDOWS)
