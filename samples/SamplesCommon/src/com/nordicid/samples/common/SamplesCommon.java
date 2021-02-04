@@ -16,8 +16,32 @@ public class SamplesCommon {
 	 * Create transport for NurApi.
 	 * NOTE: SETUP TRANSPORT FOR YOUR ENVIRONMENT
 	 */	
-	public static NurApiTransport createTransport() {
+	public static NurApiTransport createTransport() throws Exception {
+
+		// Connect reader over network
+		//return createSocket("192.168.1.110", 4333);
+		//return createSocket("ar8xaabbcc.local", 4333);
 		
+		// Connect reader over serial port (Automatically find port; WINDOWS ONLY)
+		return createSerial(findNurSerialPort(), 115200);
+		
+		// Connect reader over serial port (WINDOWS)
+		//return createSerial("COM30", 115200);
+		
+		// Connect reader over serial port (Linux)
+		//return createSerial("/dev/ttyACM0", 115200);
+		//return createSerial("/dev/ttyS0", 115200);
+		//return createSerial("/dev/ttyAMA0", 115200);
+	}
+	
+	////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////
+	// Common
+	////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////
+	
+	public static String findNurSerialPort() throws Exception
+	{
 		Map<String, String> portNames = null;
 		try {
 			portNames = NurApiSerialTransport.enumeratePortsFriendly();
@@ -43,30 +67,10 @@ public class SamplesCommon {
 		}
 		
 		if (nurPort.isEmpty()) {
-			System.out.println("Unable to find NUR serial port"); 	
-			return null;
+			throw new Exception("Unable to find NUR serial port"); 	
 		}
-		
-		return createSerial(nurPort, 115200);
-
-		// Connect reader over network
-		//return createSocket("192.168.1.110", 4333);
-		//return createSocket("ar8xaabbcc.local", 4333);
-		
-		// Connect reader over serial port (WINDOWS)
-		//return createSerial("COM30", 115200);
-		
-		// Connect reader over serial port (Linux)
-		//return createSerial("/dev/ttyACM0", 115200);
-		//return createSerial("/dev/ttyS0", 115200);
-		//return createSerial("/dev/ttyAMA0", 115200);
+		return nurPort;
 	}
-	
-	////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////
-	// Common
-	////////////////////////////////////////////////////////
-	////////////////////////////////////////////////////////
 	
 	/** Create serial port transport 
 	 * @param port 			Serial port identifier. Windows e.g. "COM5", Linux e.g. (usb) "/dev/ttyACM0", (serial) "/dev/ttyS0"

@@ -25,6 +25,8 @@ import com.nordicid.nurapi.NurRespReaderInfo;
  */
 public class Example {
 	
+	static boolean doReconnect = false;
+	
 	public static void main(String[] args) {
 		NurApi api = null;
 		
@@ -53,6 +55,22 @@ public class Example {
 			NurRespReaderInfo info = api.getReaderInfo();
 			System.out.println("info.name: " + info.name);
 			System.out.println("info.serial: " + info.serial);
+			
+			while (true) {
+				
+				System.out.println("api.isConnected(): " + api.isConnected());
+				
+				if (doReconnect) {
+					try {
+						api.disconnect();
+						api.connect();
+						doReconnect = false;
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				}
+				Thread.sleep(1000);
+			}
 		}
 		catch (Exception ex) {
 			ex.printStackTrace();
@@ -104,7 +122,7 @@ public class Example {
 		public void disconnectedEvent() {
 			// We receive disconnected event when NurApi transport is disconnected
 			System.out.println("disconnectedEvent()");
-			
+			doReconnect = true;
 		}
 		
 		@Override

@@ -28,6 +28,7 @@ public class NurApiSerialTransport implements NurApiTransport, SerialPortEventLi
 	
     String portName;
 	int baudrate;
+	boolean hwError = false;
 	
 	Object readNotifier = new Object();
 	
@@ -108,7 +109,7 @@ public class NurApiSerialTransport implements NurApiTransport, SerialPortEventLi
 			}
 		}
 		
-		if (input == null)
+		if (input == null || hwError)
 			return -1;
 		
 		int read = 0;
@@ -126,7 +127,7 @@ public class NurApiSerialTransport implements NurApiTransport, SerialPortEventLi
 
 	@Override
 	public int writeData(byte[] buffer, int len) throws IOException {
-		if (output == null)
+		if (output == null || hwError)
 			return -1;
 		output.write(buffer, 0, len);
 		return len;
@@ -139,6 +140,7 @@ public class NurApiSerialTransport implements NurApiTransport, SerialPortEventLi
 		if (System.getProperty("os.name").toLowerCase().endsWith("x"))
 			System.setProperty("gnu.io.rxtx.SerialPorts", portName);
 		
+		hwError = false;
 		ident = CommPortIdentifier.getPortIdentifier(portName);
 		port = (SerialPort)ident.open("NurApi", 1000);
 		
@@ -184,7 +186,7 @@ public class NurApiSerialTransport implements NurApiTransport, SerialPortEventLi
 	@Override
 	public boolean isConnected() 
 	{
-		return (port != null);
+		return (!hwError && port != null);
 	}
 
 	@Override
@@ -197,6 +199,13 @@ public class NurApiSerialTransport implements NurApiTransport, SerialPortEventLi
         			readNotifier.notifyAll();
 				}
         		break;
+			case SerialPortEvent.HARDWARE_ERROR:
+				synchronized (readNotifier) {
+					System.out.println("GOT HWERROR");
+					hwError = true;
+        			readNotifier.notifyAll();
+				}
+				break;
             default:
             	break;
         }

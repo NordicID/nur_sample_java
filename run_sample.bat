@@ -21,10 +21,7 @@ if "%JAVA_HOME%" == "" (
 )
 
 REM RXTX jar path
-SET RXTXJAR=transports/NurApiSerialTransport/rxtx/win_x64/RXTXcomm.jar
+SET RXTXJAR=transports/NurApiSerialTransport/nrjavaserial-5.2.1.jar
 
-REM RXTX native lib jar path
-SET RXTXLIBPATH=transports/NurApiSerialTransport/rxtx/win_x64/
-
-"%JAVA_HOME%/bin/java" -Djava.library.path="%RXTXLIBPATH%" -cp "%1/bin;samples/SamplesCommon/bin;transports/jars/*;%RXTXJAR%;import/NurApi.jar" com.nordicid.testapplication.Example
+"%JAVA_HOME%/bin/java" -cp "%1/bin;samples/SamplesCommon/bin;transports/jars/*;%RXTXJAR%;import/NurApi.jar" com.nordicid.testapplication.Example
 

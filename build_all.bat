@@ -17,7 +17,7 @@ if "%JAVA_HOME%" == "" (
 )
 
 REM RXTX jar path
-SET RXTXJAR=transports/NurApiSerialTransport/rxtx/win_x64/RXTXcomm.jar
+SET RXTXJAR=transports/NurApiSerialTransport/nrjavaserial-5.2.1.jar
 
 REM Compile samples common
 echo. Compiling NurApiSerialTransport
@@ -29,7 +29,7 @@ cd ..\..\..
 
 echo. Compiling NurApiSocketTransport
 IF NOT EXIST transports\NurApiSocketTransport\bin (md transports\NurApiSocketTransport\bin)
-"%JAVA_HOME%\bin\javac" -d "transports/NurApiSocketTransport/bin" -cp "%RXTXJAR%;import/NurApi.jar" transports/NurApiSocketTransport/src/com/nordicid/nurapi/*.java
+"%JAVA_HOME%\bin\javac" -d "transports/NurApiSocketTransport/bin" -cp "import/NurApi.jar" transports/NurApiSocketTransport/src/com/nordicid/nurapi/*.java
 cd transports\NurApiSocketTransport\bin
 "%JAVA_HOME%\bin\jar" cf ../../jars/NurApiSocketTransport.jar com/nordicid/nurapi/*.class
 cd ..\..\..
