@@ -1,3 +1,28 @@
+v1.9.1.5
+- Fixed setAccessPasswordByEpc & setKillPasswordByEpc epcBufLen parameter by multiplying value by 8
+
+v1.9.1.4
+- Fixed GPIO config enabled bit
+- AccessoryEvent barcode dataLen fix
+
+v1.9.1.3
+- Stability improvements
+
+v1.9.1.2
+- Added ToFCalibration()
+- Fixed accessory backward compatibility
+
+v1.9.1.1
+- Prevent accSensorEnumerate call for EXA31/EXA51 as BLE name corrupt on EXA FW version < 2.3.4
+- Fixed isDeviceExa31() to return true for EXA21 device where FW ver < 3.6.1
+
+v1.9.1.0
+- MDNS: Fixed null socket exception when app exit
+
+v1.9.0.9
+- Added IR data refresing at TagStorage
+- Added nanoNUR moduletype constant
+
 v1.9.0.8
 - Fixed getGPIOStatus
 - Added setGPIOStatusEx

@@ -3,6 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="import/NurApi.jar"/>
-	<classpathentry kind="lib" path="rxtx/win_x64/RXTXcomm.jar"/>
+	<classpathentry kind="lib" path="nrjavaserial-5.2.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

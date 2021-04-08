@@ -11,7 +11,7 @@ REM nur_sample_java>run_sample.bat samples\00_Connection
 REM nur_sample_java>run_sample.bat samples\01_SimpleInventory
 
 REM manually set JAVA_HOME
-REM SET JAVA_HOME="C:\Program Files\Java\jre1.8.0_31"
+SET JAVA_HOME=D:\Program Files\Amazon Corretto\jdk1.8.0_252
 if "%JAVA_HOME%" == "" (
 	echo FAILED
 	echo JAVA_HOME Environment not set
@@ -21,10 +21,7 @@ if "%JAVA_HOME%" == "" (
 )
 
 REM RXTX jar path
-SET RXTXJAR=transports/NurApiSerialTransport/rxtx/win_x64/RXTXcomm.jar
+SET RXTXJAR=transports/NurApiSerialTransport/nrjavaserial-5.2.1.jar
 
-REM RXTX native lib jar path
-SET RXTXLIBPATH=transports/NurApiSerialTransport/rxtx/win_x64/
-
-"%JAVA_HOME%/bin/java" -Djava.library.path="%RXTXLIBPATH%" -cp "%1/bin;samples/SamplesCommon/bin;transports/jars/*;%RXTXJAR%;import/NurApi.jar" com.nordicid.testapplication.Example
+"%JAVA_HOME%/bin/java" -cp "%1/bin;samples/SamplesCommon/bin;transports/jars/*;%RXTXJAR%;import/NurApi.jar" com.nordicid.testapplication.Example
 
