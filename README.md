@@ -43,6 +43,19 @@ This repository contains NurApi java samples.
   - Run sample using right mouse click over project and select: **RunAs -> Java Application**
   - See output from eclipse Console window
 
+#### Visual Studio Code
+  - Open project folder in VS Code    - 
+  - Might need to fix buildpaths, depending on platform
+    - Use absolute path in .classpath, if relative paths is not working or copy libraries to import folder
+	- If JAVA extension or othere depebdenct UI is used, add jar files to settings.json in .vscode folder
+	  "java.project.referencedLibraries": [
+          "lib/**/*.jar",
+          "lib/library.jar"
+      ]
+	  
+  - Run sample using one of VS Code option: **Run Java**
+  - See output from VS Code terminal window
+
 ### Updating NurApi.jar
 You can update to latest NurApi.jar by running script.
 Script will download latest NurApi.jar from nur_sdk github to import directory.
